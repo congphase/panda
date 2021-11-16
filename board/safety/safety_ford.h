@@ -144,7 +144,7 @@ static int ford_tx_hook(CANPacket_t *to_send) {
 }
 
 // TODO: keep camera on bus 2 and make a fwd_hook
-static int ford_fwd_hook(int bus_num, CAN_FIFOMailBox_TypeDef *to_fwd) {
+static int ford_fwd_hook(int bus_num, CANPacket_t *to_fwd) {
   int bus_fwd = -1;
   int addr = GET_ADDR(to_fwd);	
   if (!relay_malfunction) {
