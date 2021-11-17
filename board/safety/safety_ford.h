@@ -87,6 +87,10 @@ static int ford_tx_hook(CAN_FIFOMailBox_TypeDef *to_send)
     int raw_angle_can = (((GET_BYTE(to_send, 2) & 0x7F) << 8) | GET_BYTE(to_send, 3));
     int desired_angle = raw_angle_can - 10000;
     bool steer_enabled = (GET_BYTE(to_send, 2) >> 7);
+    puts("control: "); putui(controls_allowed); puts(", ");
+    puts("steer: "); putui(steer_enabled); puts(", ");
+    puts("speed: "); putui(vehicle_speed); puts(", ");
+    puts("angle: "); putui(desired_angle); puts(", ");
 
     // Rate limit check
     if (controls_allowed && steer_enabled)
@@ -98,6 +102,8 @@ static int ford_tx_hook(CAN_FIFOMailBox_TypeDef *to_send)
       int delta_angle_down = (int)(delta_angle_float) + 1;
       int highest_desired_angle = desired_angle_last + ((desired_angle_last > 0) ? delta_angle_up : delta_angle_down);
       int lowest_desired_angle = desired_angle_last - ((desired_angle_last >= 0) ? delta_angle_down : delta_angle_up);
+      puts("high: "); putui(highest_desired_angle); puts(", ");
+      puts("low: "); putui(lowest_desired_angle); puts("\n");
       violation |= max_limit_check(desired_angle, highest_desired_angle, lowest_desired_angle);
     }
 
@@ -119,6 +125,7 @@ static int ford_tx_hook(CAN_FIFOMailBox_TypeDef *to_send)
 
 static int ford_fwd_hook(int bus_num, CAN_FIFOMailBox_TypeDef *to_fwd)
 {
+  return -1;
   int bus_fwd = -1;
   int addr = GET_ADDR(to_fwd);
 
