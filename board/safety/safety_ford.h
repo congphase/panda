@@ -71,7 +71,6 @@ static int ford_rx_hook(CAN_FIFOMailBox_TypeDef *to_push)
 
 static int ford_tx_hook(CAN_FIFOMailBox_TypeDef *to_send)
 {
-  return 1;
   int tx = 1;
   int addr = GET_ADDR(to_send);
   bool violation = false;
